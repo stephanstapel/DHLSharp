@@ -1,0 +1,24 @@
+name: .NET
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+ 
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies testno-build --verbosity normal        
+    - name: Restore library dependencies 
+      run: dotnet restore DHLSharp.Client/DHLSharp.Client.csproj
+    - name: Build library
+      run: dotnet build DHLSharp.Client/DHLSharp.Client.csproj --no-restore
