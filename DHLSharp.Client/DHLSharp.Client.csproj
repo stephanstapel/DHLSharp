@@ -4,8 +4,35 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<IsPackable>true</IsPackable>
+	<PublishRepositoryUrl>true</PublishRepositoryUrl>
+	<EmbedUntrackedSources>true</EmbedUntrackedSources>
+  	<IncludeSymbols>True</IncludeSymbols>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <Version>1.0.0-beta</Version>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>1.0.0</FileVersion>
+    <PackageReleaseNotes>1.0.0-beta: Initial release. Lots of things are still subject to change.
+Feedback welcome!</PackageReleaseNotes>
+    <Title>DHLSharp.Client</Title>
+    <Authors>Stephan Stapel</Authors>
+    <Company>s2 industries</Company>
+    <Copyright>Stephan Stapel, s2 industries, 2025</Copyright>
+    <PackageProjectUrl>https://github.com/stephanstapel/DHLSharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/stephanstapel/DHLSharp</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>dhl label shipping tracking</PackageTags>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageId>DHLSharp.Client</PackageId>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
