@@ -1,5 +1,6 @@
 # DHLSharp
-# DHLSharp
+
+[![NuGet](https://img.shields.io/nuget/v/DHLSharp.Client?color=yellow)](https://www.nuget.org/packages/DHLSharp.Client/)
 
 **DHLSharp** is a C# library that provides an interface to the DHL API. It allows you to **create** and **track** shipments with DHL from within your .NET applications.
 
