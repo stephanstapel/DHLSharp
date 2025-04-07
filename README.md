@@ -1,9 +1,14 @@
 # DHLSharp
-# DHLSharp
+
+[![NuGet](https://img.shields.io/nuget/v/DHLSharp.Client?color=yellow)](https://www.nuget.org/packages/DHLSharp.Client/)
 
 **DHLSharp** is a C# library that provides an interface to the DHL API. It allows you to **create** and **track** shipments with DHL from within your .NET applications.
 
-> ⚠️ This library is in an early stage of development. It has been validated only for the **German (DE)** market so far.
+## Sponsoring
+Implementing and maintaining this library is a lot of hard work. I'm doing this in my spare time, there is no company behind developing DHLSharp. Support me in this work and help making this library better:
+
+[:heart: Sponsor me on GitHub](https://github.com/sponsors/stephanstapel)
+
 
 ## Features
 
@@ -12,11 +17,19 @@
 - 💡 Simple and fluent interface for integration in .NET projects
 - 🇩🇪 Currently tested and validated for use in Germany
 
+## License
+Subject to the Apache license http://www.apache.org/licenses/LICENSE-2.0.html
+
 ## Installation
+Just use nuget or Visual Studio Package Manager and download 'DHLSharp.Client'.
 
-Coming soon to NuGet!
+You can find more information about the nuget package here:
 
-For now, clone the repository and reference the project or compile it into your solution manually.
+[![NuGet](https://img.shields.io/nuget/v/DHLSharp.Client?color=yellow)](https://www.nuget.org/packages/DHLSharp.Client/)
+
+https://www.nuget.org/packages/DHLSharp.Client/
+
+You might also clone the repository and reference the project or compile it into your solution manually.
 
 ```bash
 git clone https://github.com/stephanstapel/DHLSharp.git
@@ -77,7 +90,7 @@ var result = await client.CreateShipmentAsync("STANDARD_GRUPPENPROFIL", shipment
 ### Track a Shipment
 
 ```csharp
-var trackingData = await api.TrackShipmentAsync("<parcelid>", "de"); // "de": optional parameter allows to specify output language
+var trackingData = await client.TrackShipmentAsync("<parcelid>", "de"); // "de": optional parameter allows to specify output language
 ```
 
 ## Credential handling in the demo application
