@@ -87,11 +87,20 @@ Shipment[] shipments = new[]
 var result = await client.CreateShipmentAsync("STANDARD_GRUPPENPROFIL", shipments, validate: false);
 ```
 
+In order to use this function, these configuration parameters need to be filled
+
+* `DHLClientConfig.ApiKey`
+* `DHLClientConfig.ApiSecret`
+* `DHLClientConfig.Username`
+* `DHLClientConfig.Password`
+
 ### Track a Shipment
 
 ```csharp
 var trackingData = await client.TrackShipmentAsync("<parcelid>", "de"); // "de": optional parameter allows to specify output language
 ```
+
+Please note that the API uses the Unified Shipment Tracking API. In order to call this function, only `DHLClientConfig.TrackingUnifiedApiKey` needs to be filled.
 
 ## Credential handling in the demo application
 The component comes with a demo application which showcases the functionality of the component.
