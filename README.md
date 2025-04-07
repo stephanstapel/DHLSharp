@@ -90,7 +90,7 @@ var result = await client.CreateShipmentAsync("STANDARD_GRUPPENPROFIL", shipment
 ### Track a Shipment
 
 ```csharp
-var trackingData = await api.TrackShipmentAsync("<parcelid>", "de"); // "de": optional parameter allows to specify output language
+var trackingData = await client.TrackShipmentAsync("<parcelid>", "de"); // "de": optional parameter allows to specify output language
 ```
 
 ## Credential handling in the demo application
