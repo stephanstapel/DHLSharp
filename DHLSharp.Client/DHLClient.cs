@@ -45,14 +45,19 @@ namespace DHLSharp.Client
         private readonly DHLClientConfig _config;
         private string _bearerToken;
 
+        private static readonly SemaphoreSlim _unifiedTrackingRateLimitSemaphore = new SemaphoreSlim(1, 1);
+        private static DateTime _unifiedTrackingLastRequestTime = DateTime.MinValue;
+
+
         public DHLClient(DHLClientConfig config)
         {
             _config = config;
+
             if (_config.IsSandbox)
             {
                 DhlTrackingUnifiedApiUrl = "https://api-eu.dhl.com/track/shipments";
                 DhlApiUrl = "https://api-sandbox.dhl.com/parcel/de/shipping/v2/";
-                AuthUrl = "https://api-sandbox.dhl.com/parcel/de/account/auth/ropc/v1/token";
+                AuthUrl = "https://api-sandbox.dhl.com/parcel/de/account/auth/ropc/v1/token";                
             }
             else
             {
@@ -95,8 +100,42 @@ namespace DHLSharp.Client
         } // !_GetAuthTokenAsync()
 
 
-        public async Task<List<Models.Tracking.Shipment>> TrackShipmentAsync(string shipmentNo, string language = "", Service? service = null, string originCountryCode = "", string requesterCountryCode = "")
+        /// <summary>
+        /// Optionally, you can pass a rate limit using the applyRateLimit parameter. This will make the function wait for the
+        /// delay that is specified in DHLConfig.TrackingRateLimitInMiliseconds
+        /// </summary>
+        /// <param name="shipmentNo"></param>
+        /// <param name="language"></param>
+        /// <param name="service"></param>
+        /// <param name="originCountryCode"></param>
+        /// <param name="requesterCountryCode"></param>
+        /// <param name="applyRateLimit"></param>
+        /// <returns></returns>
+        public async Task<List<Models.Tracking.Shipment>> TrackShipmentAsync(string shipmentNo, string language = "", Service? service = null, string originCountryCode = "", string requesterCountryCode = "", bool applyRateLimit = false)
         {
+            if (applyRateLimit)
+            {
+                await _unifiedTrackingRateLimitSemaphore.WaitAsync();
+                try
+                {
+                    var rateLimitDelay = TimeSpan.FromMilliseconds(_config.TrackingRateLimitInMiliseconds);
+                    var now = DateTime.UtcNow;
+                    var timeSinceLastRequest = now - _unifiedTrackingLastRequestTime;
+
+                    if (timeSinceLastRequest < rateLimitDelay)
+                    {
+                        var delay = rateLimitDelay - timeSinceLastRequest;
+                        await Task.Delay(delay);
+                    }
+
+                    _unifiedTrackingLastRequestTime = DateTime.UtcNow;
+                }
+                finally
+                {
+                    _unifiedTrackingRateLimitSemaphore.Release();
+                }
+            }
+
             var uriBuilder = new UriBuilder(DhlTrackingUnifiedApiUrl);
             var query = System.Web.HttpUtility.ParseQueryString(uriBuilder.Query);
 
@@ -129,18 +168,10 @@ namespace DHLSharp.Client
             var requestUrl = uriBuilder.ToString();
 
             using var client = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
-            //request.Headers.Add("Authorization", $"Bearer {bearerToken}");
+            var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);            
             request.Headers.Add("DHL-API-Key", _config.TrackingUnifiedApiKey);
             var response = await client.SendAsync(request);
             response.EnsureSuccessStatusCode();
-            /*
-            Stream s = await response.Content.ReadAsStreamAsync();
-            ShipmentResponse parsedResponse = await System.Text.Json.JsonSerializer.DeserializeAsync<ShipmentResponse>(s);
-            
-            return parsedResponse?.Shipments;
-            */
-
 
             string s = await response.Content.ReadAsStringAsync();
             ShipmentResponse shipmentResponse = System.Text.Json.JsonSerializer.Deserialize<ShipmentResponse>(s);

@@ -32,6 +32,7 @@ namespace DHLSharp.Client
         public string Username { get; set; }
         public string Password { get; set; }
         public bool IsSandbox { get; set; }
+        public int TrackingRateLimitInMiliseconds { get; set; } = 500;
         public Dictionary<ProductType, string> BillingNumbers { get; set; } = new Dictionary<ProductType, string>();
     }
 }
