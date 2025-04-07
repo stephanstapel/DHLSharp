@@ -97,13 +97,6 @@ namespace DHLSharp.Client
 
         public async Task<List<Models.Tracking.Shipment>> TrackShipmentAsync(string shipmentNo, string language = "", Service? service = null, string originCountryCode = "", string requesterCountryCode = "")
         {
-            string bearerToken = await _GetAuthTokenAsync(); // Ensure the token is available before making the API call
-
-            if (String.IsNullOrWhiteSpace(bearerToken))
-            {
-                throw new Exception("Could not load bearer token. Aborting API call.");
-            }
-
             var uriBuilder = new UriBuilder(DhlTrackingUnifiedApiUrl);
             var query = System.Web.HttpUtility.ParseQueryString(uriBuilder.Query);
 
