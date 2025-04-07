@@ -78,11 +78,8 @@ namespace DHLSharp.Demo
 
         public async Task RunAsync()
         {
-            DHLClient client = new DHLClient(_ProductionConfiguration);
-            var result = await client.TrackShipmentAsync("00340434299339705230", "de");
-
             /*
-            DHLClient api = new DHLClient(_TestConfiguration);
+            DHLClient client = new DHLClient(_TestConfiguration);
             Shipment[] shipments = new[]
                 {
                 new Shipment
@@ -126,9 +123,9 @@ namespace DHLSharp.Demo
                     }
                 }
             };
-            //  var result = await api.CreateShipmentAsync("STANDARD_GRUPPENPROFIL", shipments, validate: false);
+            //  var result = await client.CreateShipmentAsync("STANDARD_GRUPPENPROFIL", shipments, validate: false);
 
-            await api.TrackShipmentAsync("LE046975012DE", "de");
+            await client.TrackShipmentAsync("LE046975012DE", "de");
             */
         }
     }
